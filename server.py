@@ -4,12 +4,13 @@ import pdfplumber, io, base64, json, os
 from google import genai
 from pydantic import BaseModel
 
-# Initialize MCP Server
+# MCP Server Definition
 mcp = FastMCP("ResumeScreener")
 
-# Recommendation: Use environment variables for API keys
-API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyBXnKYDZaERLaOdWj6P3e3dXUg-8-VZfKQ")
-client = genai.Client(api_key=API_KEY)
+def get_genai_client():
+    """Lazy-load the Gemini client to prevent startup issues."""
+    api_key = os.getenv("GOOGLE_API_KEY", "AIzaSyBXnKYDZaERLaOdWj6P3e3dXUg-8-VZfKQ")
+    return genai.Client(api_key=api_key)
 
 class ScreeningResult(BaseModel):
     score: int
@@ -34,7 +35,9 @@ def screen_resume(file_b64: str, job_desc: str) -> str:
         if not text.strip():
             return json.dumps({"error": "No text could be extracted from the PDF."})
 
-        # 2. LLM Inference (Using Gemini 2.0 Flash for speed & cost)
+        # 2. LLM Inference (Using Gemini 2.0 Flash)
+        client = get_genai_client()
+        
         prompt = f"""
         Analyze the following resume against the job description provided.
         

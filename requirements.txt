@@ -1,2 +1,7 @@
 fastmcp
 pdfplumber
+google-genai
+pydantic
+uvicorn
+starlette
+sse-starlette
