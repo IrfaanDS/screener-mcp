@@ -67,9 +67,9 @@ def screen_resume(file_b64: str, job_desc: str) -> str:
         return json.dumps({"error": f"Internal Server Error: {str(e)}"})
 
 if __name__ == "__main__":
-    # Get port from environment variable or default to 8000
+    # Horizon and most cloud providers inject these environment variables
     port = int(os.getenv("PORT", 8000))
+    host = os.getenv("HOST", "0.0.0.0")
     
-    # Workato expects the MCP server to be accessible via SSE for remote connections
-    # We bind to 0.0.0.0 to ensure it's accessible when deployed
-    mcp.run(transport="sse", host="", port=port)
+    # Run server with SSE transport
+    mcp.run(transport="sse", host=host, port=port)
