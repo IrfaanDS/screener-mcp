@@ -72,4 +72,4 @@ if __name__ == "__main__":
     
     # Workato expects the MCP server to be accessible via SSE for remote connections
     # We bind to 0.0.0.0 to ensure it's accessible when deployed
-    mcp.run(transport="sse", host="0.0.0.0", port=port)
+    mcp.run(transport="sse", host="", port=port)
