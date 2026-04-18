@@ -3,9 +3,15 @@ from fastmcp import FastMCP
 import pdfplumber, io, base64, json, os
 from google import genai
 from pydantic import BaseModel
+from starlette.responses import JSONResponse
 
 # MCP Server Definition
 mcp = FastMCP("ResumeScreener")
+
+# Add a health check route for Horizon's pre-flight check
+@mcp.app.get("/")
+async def health():
+    return JSONResponse({"status": "ok", "mcp": "ResumeScreener"})
 
 def get_genai_client():
     """Lazy-load the Gemini client to prevent startup issues."""
