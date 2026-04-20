@@ -15,7 +15,7 @@ async def health():
 
 def get_genai_client():
     """Lazy-load the Gemini client to prevent startup issues."""
-    api_key = os.getenv("GOOGLE_API_KEY", "AIzaSyBXnKYDZaERLaOdWj6P3e3dXUg-8-VZfKQ")
+    api_key = os.getenv("GOOGLE_API_KEY")
     return genai.Client(api_key=api_key)
 
 class ScreeningResult(BaseModel):
